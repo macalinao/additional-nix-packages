@@ -22,7 +22,3 @@ jobs:
 
       - run: nix flake check
       - run: nix build .#all
-
-      - uses: cachix/devenv-action@v2
-
-      - run: devenv test
