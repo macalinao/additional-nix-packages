@@ -27,6 +27,24 @@ nix run github:macalinao/additional-nix-packages#gogcli
 }
 ```
 
+### Use the overlay
+
+```nix
+{
+  inputs.additional-nix-packages.url = "github:macalinao/additional-nix-packages";
+
+  outputs = { self, nixpkgs, additional-nix-packages, ... }:
+    let
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [ additional-nix-packages.overlays.default ];
+      };
+    in {
+      # pkgs.gogcli and pkgs.wacli are now available
+    };
+}
+```
+
 ### Add to your devenv
 
 In `devenv.yaml`, add the flake as an input:

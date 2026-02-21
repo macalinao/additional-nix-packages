@@ -12,7 +12,13 @@
       nixpkgs,
       flake-utils,
     }:
-    flake-utils.lib.eachDefaultSystem (
+    {
+      overlays.default = final: prev: {
+        gogcli = final.callPackage ./packages/gogcli { };
+        wacli = final.callPackage ./packages/wacli { };
+      };
+    }
+    // flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
