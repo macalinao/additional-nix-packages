@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: cachix/cachix-action@v16
+        with:
+          name: igm
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - run: nix flake check
+      - run: nix build .#all
+
+      - uses: cachix/devenv-action@v2
+
+      - run: devenv test
