@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nix build*)",
+      "Bash(nix eval*)",
+      "Bash(nix flake*)",
+      "Bash(nix log*)",
+      "Bash(nix run nixpkgs#nix-prefetch-github*)",
+      "Bash(nix develop*)",
+      "Bash(nix-prefetch-url*)",
+      "Bash(nix-hash*)",
+      "Bash(nix-store*)",
+      "Bash(git add*)",
+      "Bash(git rm*)",
+      "Bash(gh api*)",
+      "Bash(gh release*)",
+      "Bash(mkdir -p*)",
+      "Bash(ls *)",
+      "Bash(./result/*)"
+    ]
+  }
+}
