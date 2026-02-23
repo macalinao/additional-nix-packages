@@ -16,6 +16,7 @@ Create a Nix package derivation and integrate it into the flake.
    - Check if a flake.nix or Nix derivation already exists
 
 2. **Get the source hash**:
+
    ```bash
    nix run nixpkgs#nix-prefetch-github -- <owner> <repo> --rev <tag>
    ```
@@ -36,6 +37,7 @@ Create a Nix package derivation and integrate it into the flake.
    - Use `callPackage ./packages/<name>/package.nix { }`
 
 5. **Build and verify**:
+
    ```bash
    git add packages/<name>/package.nix  # nix needs files tracked by git
    nix build .#<name>

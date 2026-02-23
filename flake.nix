@@ -27,7 +27,7 @@
           skhd-zig = final.callPackage ./packages/skhd-zig/package.nix { inherit zbench-zig; };
           wacli = final.callPackage ./packages/wacli/package.nix { };
         }
-        // builtins.removeAttrs (lintel.packages.${final.system} or { }) [
+        // builtins.removeAttrs (lintel.packages.${prev.stdenv.hostPlatform.system} or { }) [
           "all"
           "default"
         ];
@@ -50,11 +50,17 @@
         }
         // lintelPackages;
       in
+      let
+        lib = pkgs.lib;
+        supportedPackages = lib.filterAttrs (
+          _: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
+        ) packages;
+      in
       {
         packages = packages // {
           all = pkgs.symlinkJoin {
             name = "all-packages";
-            paths = builtins.attrValues packages;
+            paths = builtins.attrValues supportedPackages;
           };
           default = self.packages.${system}.all;
         };
