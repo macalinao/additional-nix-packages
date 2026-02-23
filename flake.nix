@@ -55,14 +55,15 @@
         supportedPackages = lib.filterAttrs (
           _: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
         ) packages;
+        allPkg = pkgs.symlinkJoin {
+          name = "all-packages";
+          paths = builtins.attrValues supportedPackages;
+        };
       in
       {
         packages = packages // {
-          all = pkgs.symlinkJoin {
-            name = "all-packages";
-            paths = builtins.attrValues supportedPackages;
-          };
-          default = self.packages.${system}.all;
+          all = allPkg;
+          default = allPkg;
         };
       }
     );
