@@ -8,5 +8,8 @@
     "igm"
   ];
 
-  git-hooks.hooks.nixfmt.enable = true;
+  git-hooks.hooks = {
+    nixfmt.enable = true;
+    prettier.enable = true;
+  };
 }
