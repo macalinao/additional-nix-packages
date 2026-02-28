@@ -61,7 +61,7 @@
         };
       in
       {
-        packages = packages // {
+        packages = supportedPackages // {
           all = allPkg;
           default = allPkg;
         };
