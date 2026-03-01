@@ -4,14 +4,14 @@
   fetchFromGitHub,
 }:
 
-buildGoModule rec {
+buildGoModule (finalAttrs: {
   pname = "gogcli";
   version = "0.11.0";
 
   src = fetchFromGitHub {
     owner = "steipete";
     repo = "gogcli";
-    rev = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-hJU40ysjRx4p9SWGmbhhpToYCpk3DcMAWCnKqxHRmh0=";
   };
 
@@ -22,8 +22,8 @@ buildGoModule rec {
   ldflags = [
     "-s"
     "-w"
-    "-X github.com/steipete/gogcli/internal/cmd.version=v${version}"
-    "-X github.com/steipete/gogcli/internal/cmd.commit=91c4c15884441105c7e793217366f1335b344478"
+    "-X github.com/steipete/gogcli/internal/cmd.version=v${finalAttrs.version}"
+    "-X github.com/steipete/gogcli/internal/cmd.commit=${finalAttrs.src.rev}"
     "-X github.com/steipete/gogcli/internal/cmd.date=1970-01-01T00:00:00Z"
   ];
 
@@ -31,6 +31,7 @@ buildGoModule rec {
     description = "A CLI tool for interacting with Google APIs (Gmail, Calendar, Drive, and more)";
     homepage = "https://github.com/steipete/gogcli";
     license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ macalinao ];
     mainProgram = "gog";
   };
-}
+})
