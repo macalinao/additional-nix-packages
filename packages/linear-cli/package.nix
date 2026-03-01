@@ -66,7 +66,21 @@ let
         -name '.deno.lock.poll' \
       \) -delete
 
-      # Sort registry.json keys for deterministic output (already done in prune loop above)
+      # Normalize volatile "// denoCacheMetadata={...}" comments in JSR/remote cached files.
+      # These contain per-request HTTP headers (cf-ray, date, x-guploader-uploadid, etc.)
+      # that differ on every fetch. Keep only the url field which Deno needs for cache lookups.
+      find "$DENO_DIR/remote" -type f | while read -r f; do
+        META_LINE=$(grep '// denoCacheMetadata=' "$f" || true)
+        if [ -n "$META_LINE" ]; then
+          URL=$(echo "$META_LINE" | sed 's|.*// denoCacheMetadata=||' | jq -r '.url')
+          grep -v '// denoCacheMetadata=' "$f" > "$f.tmp"
+          printf '// denoCacheMetadata={"headers":{},"url":"%s"}' "$URL" >> "$f.tmp"
+          mv "$f.tmp" "$f"
+        fi
+      done
+
+      # Remove non-deterministic npm lifecycle script marker files (.scripts-warned-*)
+      find "$DENO_DIR" -name '.scripts-warned-*' -delete
 
       # Prune HTTP metadata (etags, timestamps) from URL cache metadata
       find "$DENO_DIR" -name 'metadata.json' -type f | while read -r f; do
@@ -82,8 +96,8 @@ let
     outputHashAlgo = "sha256";
     outputHash =
       {
-        x86_64-linux = "sha256-0cb51FNaj6jmFjOAA5VUeY6RT+GFIKPJE9zfQGl5Dqk=";
-        aarch64-darwin = "sha256-hiRJf3agh73H//Sj4Lut5w/NFuTu/WY8xSNONxbWcfE=";
+        x86_64-linux = lib.fakeHash;
+        aarch64-darwin = "sha256-nXAk6BX/PmxXXCVGcCpB4u7nnYZCHRxaWfMgRn2nMos=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
