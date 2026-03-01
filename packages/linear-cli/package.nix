@@ -4,6 +4,7 @@
   fetchFromGitHub,
   deno,
   cacert,
+  jq,
 }:
 
 let
@@ -22,6 +23,7 @@ let
     nativeBuildInputs = [
       deno
       cacert
+      jq
     ];
 
     buildPhase = ''
@@ -30,13 +32,29 @@ let
 
       # Install all deps from deno.json/deno.lock
       deno install --frozen
+
+      # Prune non-reproducible data from the cache (inspired by nixpkgs PR #407434).
+      # registry.json files contain all published versions for a package and etags,
+      # both of which change over time and break the FOD hash.
+      for f in $(find "$DENO_DIR" -name registry.json -type f); do
+        jq --sort-keys '{name, versions: (.versions | to_entries | map(select(.value.dist != null)) | from_entries)} ' "$f" > "$f.tmp"
+        mv "$f.tmp" "$f"
+      done
+
+      # Remove SQLite WAL/SHM files and analysis caches
+      find "$DENO_DIR" -name '*-shm' -o -name '*-wal' -o -name 'dep_analysis_cache_v2' -o -name 'node_analysis_cache_v2' -o -name 'v8_code_cache_v2' | xargs rm -f
     '';
 
     installPhase = "true";
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-wsSD/QFbs/jiHTdMkNk7PmRtI4bFaZjY8Pxi73jkSF4=";
+    outputHash =
+      {
+        x86_64-linux = lib.fakeHash;
+        aarch64-darwin = "sha256-RDDxy1KsQ4YAWxUHH+1vp7p9cV2FG5eXaK1tKBioS5U=";
+      }
+      .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
 in
 
