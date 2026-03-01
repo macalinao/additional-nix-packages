@@ -33,6 +33,12 @@ let
       # Install all deps from deno.json/deno.lock
       deno install --allow-scripts --frozen
 
+      # Cache the denort runtime binary needed by deno compile.
+      # This downloads the platform-specific denort zip into DENO_DIR.
+      echo 'console.log("hello")' > /tmp/dummy.ts
+      deno compile --output /tmp/dummy /tmp/dummy.ts 2>/dev/null || true
+      rm -f /tmp/dummy /tmp/dummy.ts
+
       # Prune non-reproducible data from the cache (inspired by nixpkgs PR #407434).
       # registry.json files contain all published versions for a package and etags,
       # both of which change over time and break the FOD hash.
@@ -60,7 +66,9 @@ let
       # Remove all SQLite databases and WAL/SHM files (non-deterministic)
       find "$DENO_DIR" \( \
         -name '*-shm' -o -name '*-wal' -o \
+        -name 'check_cache_v2' -o \
         -name 'dep_analysis_cache_v2' -o \
+        -name 'fast_check_cache_v2' -o \
         -name 'node_analysis_cache_v2' -o \
         -name 'v8_code_cache_v2' -o \
         -name '.deno.lock.poll' \
@@ -96,8 +104,8 @@ let
     outputHashAlgo = "sha256";
     outputHash =
       {
-        x86_64-linux = "sha256-WkxDT6YQDz7WYOHSkni9hNUG0QiYyXwJNiyg6yT6Qn0=";
-        aarch64-darwin = "sha256-nXAk6BX/PmxXXCVGcCpB4u7nnYZCHRxaWfMgRn2nMos=";
+        x86_64-linux = lib.fakeHash;
+        aarch64-darwin = "sha256-6BAmlErFC//TRjP2wteMWEgnhV+G5pWb7ouvfs5xxxw=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
