@@ -27,32 +27,50 @@ let
     ];
 
     buildPhase = ''
-      export DENO_DIR="$out"
+      export DENO_DIR="$(pwd)/.deno-cache"
       export HOME="$(mktemp -d)"
 
       # Install all deps from deno.json/deno.lock
-      deno install --frozen
+      deno install --allow-scripts --frozen
 
       # Prune non-reproducible data from the cache (inspired by nixpkgs PR #407434).
       # registry.json files contain all published versions for a package and etags,
       # both of which change over time and break the FOD hash.
+      # Extract name@version pairs from deno.lock's npm section.
+      VERSIONS_FILE="$(mktemp)"
+      jq -r '
+        .npm // {} | keys[] | split("@") as $parts |
+        if ($parts[0] == "") then
+          ("@" + $parts[1]) + " " + ($parts[2] | split("_")[0])
+        else
+          $parts[0] + " " + ($parts[1] | split("_")[0])
+        end
+      ' deno.lock > "$VERSIONS_FILE"
+
+      # Prune each registry.json to only versions referenced in deno.lock
       for f in $(find "$DENO_DIR" -name registry.json -type f); do
-        jq --sort-keys '{name, versions: (.versions | to_entries | map(select(.value.dist != null)) | from_entries)} ' "$f" > "$f.tmp"
+        PKG_NAME=$(jq -r '.name' "$f")
+        KEEP_VERSIONS=$({ grep -F "$PKG_NAME " "$VERSIONS_FILE" || true; } | awk '{print $2}' | jq -R . | jq -s .)
+        jq --sort-keys --argjson keep "$KEEP_VERSIONS" \
+          '{name, versions: (.versions | to_entries | map(select(.key as $k | $keep | index($k))) | from_entries)}' \
+          "$f" > "$f.tmp"
         mv "$f.tmp" "$f"
       done
 
       # Remove SQLite WAL/SHM files and analysis caches
-      find "$DENO_DIR" -name '*-shm' -o -name '*-wal' -o -name 'dep_analysis_cache_v2' -o -name 'node_analysis_cache_v2' -o -name 'v8_code_cache_v2' | xargs rm -f
+      find "$DENO_DIR" \( -name '*-shm' -o -name '*-wal' -o -name 'dep_analysis_cache_v2' -o -name 'node_analysis_cache_v2' -o -name 'v8_code_cache_v2' \) -delete
     '';
 
-    installPhase = "true";
+    installPhase = ''
+      cp -r "$DENO_DIR" "$out"
+    '';
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
     outputHash =
       {
-        x86_64-linux = "sha256-H7KG+Pk4ERu9+itO2+O0xZA2a7PTX2WCEp5QEiWpljE=";
-        aarch64-darwin = "sha256-RDDxy1KsQ4YAWxUHH+1vp7p9cV2FG5eXaK1tKBioS5U=";
+        x86_64-linux = lib.fakeHash;
+        aarch64-darwin = "sha256-or6DMW6rNBMRiEk9AN/RpGbBcWK7Ihh34iURLdjphdo=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
