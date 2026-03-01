@@ -57,8 +57,21 @@ let
         mv "$f.tmp" "$f"
       done
 
-      # Remove SQLite WAL/SHM files and analysis caches
-      find "$DENO_DIR" \( -name '*-shm' -o -name '*-wal' -o -name 'dep_analysis_cache_v2' -o -name 'node_analysis_cache_v2' -o -name 'v8_code_cache_v2' \) -delete
+      # Remove all SQLite databases and WAL/SHM files (non-deterministic)
+      find "$DENO_DIR" \( \
+        -name '*-shm' -o -name '*-wal' -o \
+        -name 'dep_analysis_cache_v2' -o \
+        -name 'node_analysis_cache_v2' -o \
+        -name 'v8_code_cache_v2' -o \
+        -name '.deno.lock.poll' \
+      \) -delete
+
+      # Sort registry.json keys for deterministic output (already done in prune loop above)
+
+      # Prune HTTP metadata (etags, timestamps) from URL cache metadata
+      find "$DENO_DIR" -name 'metadata.json' -type f | while read -r f; do
+        jq --sort-keys 'del(.headers.etag, .headers.Etag, .now, .date)' "$f" > "$f.tmp" 2>/dev/null && mv "$f.tmp" "$f" || rm -f "$f.tmp"
+      done
     '';
 
     installPhase = ''
@@ -69,8 +82,8 @@ let
     outputHashAlgo = "sha256";
     outputHash =
       {
-        x86_64-linux = "sha256-irqaj349JQj37gpuAKBnxW5PxH4ejfMelFAaslw/x68=";
-        aarch64-darwin = "sha256-or6DMW6rNBMRiEk9AN/RpGbBcWK7Ihh34iURLdjphdo=";
+        x86_64-linux = lib.fakeHash;
+        aarch64-darwin = "sha256-hiRJf3agh73H//Sj4Lut5w/NFuTu/WY8xSNONxbWcfE=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
