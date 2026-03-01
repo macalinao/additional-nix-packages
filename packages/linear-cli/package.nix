@@ -69,7 +69,7 @@ let
     outputHashAlgo = "sha256";
     outputHash =
       {
-        x86_64-linux = lib.fakeHash;
+        x86_64-linux = "sha256-irqaj349JQj37gpuAKBnxW5PxH4ejfMelFAaslw/x68=";
         aarch64-darwin = "sha256-or6DMW6rNBMRiEk9AN/RpGbBcWK7Ihh34iURLdjphdo=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
