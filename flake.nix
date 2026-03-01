@@ -3,68 +3,46 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
     lintel.url = "github:lintel-rs/lintel";
+    lintel.inputs.nixpkgs.follows = "nixpkgs";
+    mad.url = "github:macalinao/mad";
+    mad.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      lintel,
-    }:
-    {
-      overlays.default =
-        final: prev:
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+
+      perSystem =
+        {
+          pkgs,
+          lib,
+          inputs',
+          ...
+        }:
         let
-          zbench-zig = final.callPackage ./packages/zbench-zig/package.nix { };
+          allPackages = import ./packages { inherit pkgs inputs'; };
+          supportedPackages = lib.filterAttrs (
+            _: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
+          ) allPackages;
         in
         {
-          biome = final.callPackage ./packages/biome/package.nix { };
-          gogcli = final.callPackage ./packages/gogcli/package.nix { };
-          linear-cli = final.callPackage ./packages/linear-cli/package.nix { };
-          skhd-zig = final.callPackage ./packages/skhd-zig/package.nix { inherit zbench-zig; };
-          wacli = final.callPackage ./packages/wacli/package.nix { };
-        }
-        // builtins.removeAttrs (lintel.packages.${prev.stdenv.hostPlatform.system} or { }) [
-          "all"
-          "default"
-        ];
-    }
-    // flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        zbench-zig = pkgs.callPackage ./packages/zbench-zig/package.nix { };
-        lintelPackages = builtins.removeAttrs (lintel.packages.${system} or { }) [
-          "all"
-          "default"
-        ];
-        packages = {
-          biome = pkgs.callPackage ./packages/biome/package.nix { };
-          gogcli = pkgs.callPackage ./packages/gogcli/package.nix { };
-          linear-cli = pkgs.callPackage ./packages/linear-cli/package.nix { };
-          skhd-zig = pkgs.callPackage ./packages/skhd-zig/package.nix { inherit zbench-zig; };
-          wacli = pkgs.callPackage ./packages/wacli/package.nix { };
-        }
-        // lintelPackages;
-      in
-      let
-        lib = pkgs.lib;
-        supportedPackages = lib.filterAttrs (
-          _: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
-        ) packages;
-        allPkg = pkgs.symlinkJoin {
-          name = "all-packages";
-          paths = builtins.attrValues supportedPackages;
+          packages = supportedPackages // {
+            all-supported-packages = pkgs.symlinkJoin {
+              name = "all-supported-packages";
+              paths = builtins.attrValues supportedPackages;
+            };
+          };
+          overlayAttrs = supportedPackages;
         };
-      in
-      {
-        packages = supportedPackages // {
-          all = allPkg;
-          default = allPkg;
-        };
-      }
-    );
+    };
 }

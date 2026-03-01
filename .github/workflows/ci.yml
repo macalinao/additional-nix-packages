@@ -28,4 +28,4 @@ jobs:
 
       - run: devenv test
       - run: nix flake check
-      - run: nix build .#all
+      - run: nix build .#all-supported-packages
