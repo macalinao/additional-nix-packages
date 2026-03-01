@@ -1,5 +1,6 @@
 ---
-description: Contribute a package from this repo to nixpkgs by updating it to nixpkgs conventions, copying it, and submitting a PR
+name: Contribute to nixpkgs
+description: This skill should be used when the user asks to "contribute to nixpkgs", "submit package upstream", "send to nixpkgs", "create nixpkgs PR", or wants to submit a package from this repo to the upstream NixOS/nixpkgs repository.
 argument_hint: "<package-name>"
 ---
 

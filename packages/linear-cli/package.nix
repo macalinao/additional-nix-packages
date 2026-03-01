@@ -30,17 +30,13 @@ let
 
       # Install all deps from deno.json/deno.lock
       deno install --frozen
-
-      # Force download of denort runtime for deno compile
-      echo 'console.log("hello")' > /tmp/hello.ts
-      deno compile -o /tmp/hello /tmp/hello.ts
     '';
 
     installPhase = "true";
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-6I257yaDjmaL4oqk7SnPtqvuhveirMbz9GRLnovYc8M=";
+    outputHash = "sha256-wsSD/QFbs/jiHTdMkNk7PmRtI4bFaZjY8Pxi73jkSF4=";
   };
 in
 

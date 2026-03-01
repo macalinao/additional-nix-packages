@@ -1,5 +1,6 @@
 ---
-description: Create a Nix derivation for a package and add it to the flake
+name: Create Nix Derivation
+description: This skill should be used when the user asks to "create a nix package", "add a package", "create a derivation", "package this repo", or provides a GitHub URL to package. Creates a Nix package derivation and integrates it into the flake.
 argument_hint: "<github-repo>"
 ---
 
