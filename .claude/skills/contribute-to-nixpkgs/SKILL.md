@@ -1,7 +1,7 @@
 ---
-name: Contribute to nixpkgs
+name: contribute-to-nixpkgs
 description: This skill should be used when the user asks to "contribute to nixpkgs", "submit package upstream", "send to nixpkgs", "create nixpkgs PR", or wants to submit a package from this repo to the upstream NixOS/nixpkgs repository.
-argument_hint: "<package-name>"
+argument-hint: "<package-name>"
 ---
 
 # Contribute Package to nixpkgs
