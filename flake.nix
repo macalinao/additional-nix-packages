@@ -21,6 +21,8 @@
         "x86_64-darwin"
       ];
 
+      imports = [ ./overlays.nix ];
+
       perSystem =
         {
           pkgs,
@@ -35,22 +37,8 @@
           ) allPackages;
         in
         {
-          packages = supportedPackages // {
-            all-supported-packages = pkgs.symlinkJoin {
-              name = "all-supported-packages";
-              paths = builtins.attrValues supportedPackages;
-            };
-          };
+          packages = supportedPackages;
+          checks = supportedPackages;
         };
-
-      flake.overlays.default =
-        final: prev:
-        let
-          system = prev.stdenv.hostPlatform.system;
-          self = inputs.self.packages.${system};
-        in
-        prev.lib.filterAttrs (_: pkg: prev.lib.meta.availableOn prev.stdenv.hostPlatform pkg) (
-          builtins.removeAttrs self [ "all-supported-packages" ]
-        );
     };
 }
