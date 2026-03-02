@@ -8,7 +8,7 @@
         inherit (inputs) lintel mad;
       };
       allPackages = import ./packages {
-        pkgs = final;
+        pkgs = prev;
         inherit inputs';
       };
     in
