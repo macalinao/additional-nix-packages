@@ -14,7 +14,6 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -42,7 +41,16 @@
               paths = builtins.attrValues supportedPackages;
             };
           };
-          overlayAttrs = supportedPackages;
         };
+
+      flake.overlays.default =
+        final: prev:
+        let
+          system = prev.stdenv.hostPlatform.system;
+          self = inputs.self.packages.${system};
+        in
+        prev.lib.filterAttrs (_: pkg: prev.lib.meta.availableOn prev.stdenv.hostPlatform pkg) (
+          builtins.removeAttrs self [ "all-supported-packages" ]
+        );
     };
 }
