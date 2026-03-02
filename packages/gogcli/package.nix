@@ -28,7 +28,7 @@ buildGoModule (finalAttrs: {
   ];
 
   meta = {
-    description = "A CLI tool for interacting with Google APIs (Gmail, Calendar, Drive, and more)";
+    description = "CLI tool for interacting with Google APIs (Gmail, Calendar, Drive, and more)";
     homepage = "https://github.com/steipete/gogcli";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ macalinao ];
