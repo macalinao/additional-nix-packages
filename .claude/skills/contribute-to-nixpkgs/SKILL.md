@@ -16,7 +16,7 @@ Submit a package from `additional-nix-packages` to the upstream nixpkgs reposito
 
 ## Steps
 
-### 0. Ensure nixpkgs is on master and up to date
+### 1. Ensure nixpkgs is on master and up to date
 
 ```bash
 cd ~/proj/macalinao/nixpkgs
@@ -25,7 +25,9 @@ git pull upstream master
 git push origin master
 ```
 
-### 1. Update package to nixpkgs conventions
+### 2. Update package to nixpkgs conventions
+
+Reference the [nixpkgs contributing guide](https://github.com/NixOS/nixpkgs/blob/master/CONTRIBUTING.md) and look at existing packages in `~/proj/macalinao/nixpkgs/pkgs/by-name/` for examples of current conventions.
 
 Read `packages/<name>/package.nix` and apply these changes in-place:
 
@@ -37,7 +39,7 @@ Read `packages/<name>/package.nix` and apply these changes in-place:
 
 Not all changes apply to every package — only apply what's relevant.
 
-### 2. Copy to nixpkgs
+### 3. Copy to nixpkgs
 
 Determine the two-letter prefix from the package name (e.g., `gogcli` → `go`, `hello` → `he`).
 
@@ -48,7 +50,7 @@ cp packages/<name>/package.nix ~/proj/macalinao/nixpkgs/pkgs/by-name/<prefix>/<n
 
 No `all-packages.nix` entry needed — `pkgs/by-name/` auto-discovers.
 
-### 3. Verify
+### 4. Verify
 
 Run both in parallel:
 
@@ -60,7 +62,7 @@ cd ~/proj/macalinao/nixpkgs && nix-build -A <name>
 nix flake check --no-build
 ```
 
-### 4. Create branch and submit PR
+### 5. Create branch and submit PR
 
 From the nixpkgs checkout:
 
@@ -92,7 +94,7 @@ EOF
 )"
 ```
 
-### 5. Return to master
+### 6. Return to master
 
 ```bash
 cd ~/proj/macalinao/nixpkgs && git checkout master
