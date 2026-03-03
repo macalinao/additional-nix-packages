@@ -2,6 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  testers,
 }:
 
 buildGoModule (finalAttrs: {
@@ -26,6 +27,12 @@ buildGoModule (finalAttrs: {
     "-X github.com/steipete/gogcli/internal/cmd.commit=${finalAttrs.src.rev}"
     "-X github.com/steipete/gogcli/internal/cmd.date=1970-01-01T00:00:00Z"
   ];
+
+  passthru.tests.version = testers.testVersion {
+    package = finalAttrs.finalPackage;
+    command = "gog --version";
+    version = "v${finalAttrs.version}";
+  };
 
   meta = {
     description = "CLI tool for interacting with Google APIs (Gmail, Calendar, Drive, and more)";

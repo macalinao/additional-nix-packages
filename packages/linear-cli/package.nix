@@ -5,6 +5,7 @@
   deno,
   cacert,
   jq,
+  testers,
 }:
 
 let
@@ -111,7 +112,7 @@ let
   };
 in
 
-stdenv.mkDerivation {
+stdenv.mkDerivation (finalAttrs: {
   pname = "linear-cli";
   inherit version src;
 
@@ -138,6 +139,11 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
+  passthru.tests.version = testers.testVersion {
+    package = finalAttrs.finalPackage;
+    command = "NO_COLOR=1 linear --version";
+  };
+
   meta = {
     description = "CLI for Linear issue tracking";
     homepage = "https://github.com/schpet/linear-cli";
@@ -145,4 +151,4 @@ stdenv.mkDerivation {
     maintainers = [ ];
     mainProgram = "linear";
   };
-}
+})

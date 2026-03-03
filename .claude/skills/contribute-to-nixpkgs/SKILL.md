@@ -74,24 +74,21 @@ git commit -m "<name>: init at <version>"
 git push -u origin <name>-init
 ```
 
-Then create the PR against `NixOS/nixpkgs`:
+Then create the PR against `NixOS/nixpkgs`. First, fetch the official PR template to use as the checklist:
+
+```bash
+gh api repos/NixOS/nixpkgs/contents/.github/PULL_REQUEST_TEMPLATE.md --jq '.content' | base64 -d > /tmp/nixpkgs-pr-template.md
+```
+
+Read the template, then construct the PR body with:
+
+- A `## Description` section: `Add [<name>](<homepage>), <description>.`
+- The `## Things done` checklist from the template, with the appropriate boxes checked based on what was actually tested/done (at minimum: the platform you built on, "Tested basic functionality" if verified, and "Fits CONTRIBUTING.md" if conventions were followed)
 
 ```bash
 gh pr create --repo NixOS/nixpkgs \
   --title "<name>: init at <version>" \
-  --body "$(cat <<'EOF'
-## Description
-
-Add [<name>](<homepage>), <description>.
-
-## Things done
-
-- [x] Tested via `nix-build -A <name>`
-- [x] `pkgs/by-name` convention used
-- [x] Uses modern `finalAttrs` pattern
-- [x] `maintainers` field set
-EOF
-)"
+  --body "<constructed body with description + official checklist>"
 ```
 
 ### 6. Return to master

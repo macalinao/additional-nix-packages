@@ -2,6 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  testers,
 }:
 
 buildGoModule (finalAttrs: {
@@ -27,6 +28,10 @@ buildGoModule (finalAttrs: {
   ];
 
   subPackages = [ "cmd/wacli" ];
+
+  passthru.tests.version = testers.testVersion {
+    package = finalAttrs.finalPackage;
+  };
 
   meta = {
     description = "WhatsApp CLI built on whatsmeow";

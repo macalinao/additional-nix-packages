@@ -6,6 +6,7 @@
   libgit2,
   rust-jemalloc-sys,
   zlib,
+  testers,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -36,6 +37,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
   env = {
     BIOME_VERSION = finalAttrs.version;
     LIBGIT2_NO_VENDOR = 1;
+  };
+
+  passthru.tests.version = testers.testVersion {
+    package = finalAttrs.finalPackage;
   };
 
   meta = {

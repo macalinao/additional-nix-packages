@@ -6,20 +6,17 @@
   apple-sdk,
   rcodesign,
   replaceVars,
+  testers,
 }:
 
-let
-  version = "0.0.17";
-in
-
-stdenv.mkDerivation {
+stdenv.mkDerivation (finalAttrs: {
   pname = "skhd-zig";
-  inherit version;
+  version = "0.0.17";
 
   src = fetchFromGitHub {
     owner = "jackielii";
     repo = "skhd.zig";
-    rev = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-yQjWOYaavgRfcoesDlHV28sU+PBD8wL06r6BIHzrHy0=";
   };
 
@@ -62,12 +59,18 @@ stdenv.mkDerivation {
     runHook postBuild
   '';
 
+  passthru.tests.version = testers.testVersion {
+    package = finalAttrs.finalPackage;
+    command = "skhd --version";
+    version = "v${finalAttrs.version}";
+  };
+
   meta = {
     description = "Zig rewrite of skhd - simple hotkey daemon for macOS";
     homepage = "https://github.com/jackielii/skhd.zig";
     license = lib.licenses.mit;
-    maintainers = [ ];
+    maintainers = with lib.maintainers; [ macalinao ];
     platforms = lib.platforms.darwin;
     mainProgram = "skhd";
   };
-}
+})
