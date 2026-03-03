@@ -2,14 +2,11 @@
   pkgs,
   inputs',
 }:
-let
-  zbench-zig = pkgs.callPackage ./zbench-zig/package.nix { };
-in
 {
   biome = pkgs.callPackage ./biome/package.nix { };
   gogcli = pkgs.callPackage ./gogcli/package.nix { };
   linear-cli = pkgs.callPackage ./linear-cli/package.nix { };
-  skhd-zig = pkgs.callPackage ./skhd-zig/package.nix { inherit zbench-zig; };
+  skhd-zig = pkgs.callPackage ./skhd-zig/package.nix { };
   wacli = pkgs.callPackage ./wacli/package.nix { };
   cargo-furnish = inputs'.lintel.packages.cargo-furnish;
   lintel = inputs'.lintel.packages.lintel;

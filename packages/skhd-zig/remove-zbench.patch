@@ -1,0 +1,31 @@
+--- a/build.zig	2026-03-03 11:59:45.224713000 +0800
++++ b/build.zig	2026-03-03 11:59:56.295216091 +0800
+@@ -103,12 +103,6 @@
+     linkFrameworks(bench_exe);
+     addVersionImport(b, bench_exe);
+ 
+-    const zbench = b.dependency("zbench", .{
+-        .target = target,
+-        .optimize = .ReleaseFast,
+-    });
+-    bench_exe.root_module.addImport("zbench", zbench.module("zbench"));
+-
+     const bench_cmd = b.addRunArtifact(bench_exe);
+     const bench_step = b.step("bench", "Run benchmarks");
+     bench_step.dependOn(&bench_cmd.step);
+--- a/build.zig.zon	2026-03-03 11:59:45.231626000 +0800
++++ b/build.zig.zon	2026-03-03 11:59:56.295643258 +0800
+@@ -35,12 +35,7 @@
+     // `zig build --fetch` can be used to fetch all dependencies of a package, recursively.
+     // Once all dependencies are fetched, `zig build` no longer requires
+     // internet connectivity.
+-    .dependencies = .{
+-        .zbench = .{
+-            .url = "https://github.com/hendriknielaender/zbench/archive/ad7ccbdb06476affc512c12574b54f7d4386622c.tar.gz",
+-            .hash = "zbench-0.10.0-YTdc7-cmAQCnYOFNUAy3wZ-Sx9-_r8lW4uwpn87wydTn",
+-        },
+-    },
++    .dependencies = .{},
+     .paths = .{
+         "build.zig",
+         "build.zig.zon",

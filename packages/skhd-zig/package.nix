@@ -6,7 +6,6 @@
   apple-sdk,
   rcodesign,
   replaceVars,
-  zbench-zig,
 }:
 
 let
@@ -24,7 +23,10 @@ stdenv.mkDerivation {
     hash = "sha256-yQjWOYaavgRfcoesDlHV28sU+PBD8wL06r6BIHzrHy0=";
   };
 
-  patches = lib.optionals stdenv.hostPlatform.isDarwin [
+  patches = [
+    ./remove-zbench.patch
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [
     (replaceVars ./darwin.patch {
       darwin-frameworks = "${apple-sdk.sdkroot}/System/Library/Frameworks";
       darwin-include = "${apple-sdk.sdkroot}/usr/include";
@@ -50,14 +52,9 @@ stdenv.mkDerivation {
     export ZIG_LOCAL_CACHE_DIR="$TMPDIR/zig-cache"
     export ZIG_GLOBAL_CACHE_DIR="$TMPDIR/zig-cache"
 
-    # Provide zbench dependency via --system
-    mkdir -p "$TMPDIR/deps/zbench-0.10.0-YTdc7-cmAQCnYOFNUAy3wZ-Sx9-_r8lW4uwpn87wydTn"
-    cp -r ${zbench-zig}/* "$TMPDIR/deps/zbench-0.10.0-YTdc7-cmAQCnYOFNUAy3wZ-Sx9-_r8lW4uwpn87wydTn/"
-
     zig build \
       -Doptimize=ReleaseFast \
-      --prefix $out \
-      --system "$TMPDIR/deps"
+      --prefix $out
 
     # Ad-hoc code sign for macOS accessibility permissions
     rcodesign sign $out/bin/skhd
