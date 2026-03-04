@@ -149,6 +149,10 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://github.com/schpet/linear-cli";
     license = lib.licenses.mit;
     maintainers = [ ];
+    platforms = [
+      "x86_64-linux"
+      "aarch64-darwin"
+    ];
     mainProgram = "linear";
   };
 })
