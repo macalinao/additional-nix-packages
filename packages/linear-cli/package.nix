@@ -106,6 +106,8 @@ let
     outputHash =
       {
         x86_64-linux = "sha256-SWIqonf4TUeJ9fEnY8KIMn/loaRRal8yuyUg5vSmuo4=";
+        aarch64-linux = "sha256-WZZbcpzoIp85EyDLNUf8VL/7hYR1h54nDddZjZxGJR4=";
+        x86_64-darwin = "sha256-SdR18eFf/7kKDZ35q5M5f7jRkzQguYmOVxRFqS3Hpgc=";
         aarch64-darwin = "sha256-6BAmlErFC//TRjP2wteMWEgnhV+G5pWb7ouvfs5xxxw=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
@@ -149,10 +151,7 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://github.com/schpet/linear-cli";
     license = lib.licenses.mit;
     maintainers = [ ];
-    platforms = [
-      "x86_64-linux"
-      "aarch64-darwin"
-    ];
+    platforms = lib.platforms.linux ++ lib.platforms.darwin;
     mainProgram = "linear";
   };
 })
