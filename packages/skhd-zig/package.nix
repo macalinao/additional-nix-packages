@@ -4,6 +4,7 @@
   fetchFromGitHub,
   zig_0_14,
   apple-sdk,
+  rcodesign,
   replaceVars,
   testers,
 }:
@@ -21,6 +22,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches = [
     ./remove-zbench.patch
+    ./headerpad.patch
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [
     (replaceVars ./darwin.patch {
@@ -32,6 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     zig_0_14
+    rcodesign
   ];
 
   buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
@@ -52,7 +55,7 @@ stdenv.mkDerivation (finalAttrs: {
       --prefix $out
 
     # Ad-hoc code sign for macOS accessibility permissions
-    /usr/bin/codesign --force --sign - $out/bin/skhd
+    rcodesign sign $out/bin/skhd
 
     runHook postBuild
   '';

@@ -1,0 +1,14 @@
+--- a/build.zig
++++ b/build.zig
+@@ -64,6 +64,11 @@
+     const options = b.addOptions();
+     options.addOption(bool, track_alloc_option, false);
+
++    // Ensure enough Mach-O header space for code signing on x86_64
++    // (ziglang/zig#17000). Without this, rcodesign fails with
++    // "insufficient room to write code signature load command".
++    exe.headerpad_max_install_names = true;
++
+     linkFrameworks(exe);
+     addVersionImport(b, exe);
+     exe.root_module.addOptions("build_options", options);
