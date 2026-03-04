@@ -1,4 +1,4 @@
-name: CI
+name: devenv
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     permissions:
       id-token: write
@@ -14,24 +14,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v6
 
       - uses: DeterminateSystems/determinate-nix-action@v3
-        if: runner.os != 'macOS' || runner.arch != 'X64'
       - uses: DeterminateSystems/flakehub-cache-action@main
-        if: runner.os != 'macOS' || runner.arch != 'X64'
         continue-on-error: true
-
-      - uses: cachix/install-nix-action@v31
-        if: runner.os == 'macOS' && runner.arch == 'X64'
-        with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: cachix/cachix-action@v16
         with:
           name: igm
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
-      - run: nix flake check --print-build-logs
+      - name: Install devenv
+        run: nix profile install nixpkgs#devenv
+
+      - run: devenv test
