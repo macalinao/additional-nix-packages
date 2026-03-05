@@ -58,7 +58,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   meta = {
-    description = "macOS notification CLI with Claude Code hook support";
+    description = "Notification CLI for macOS with Claude Code hook support";
     homepage = "https://github.com/macalinao/notifykit";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ macalinao ];
