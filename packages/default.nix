@@ -14,5 +14,5 @@
   lintel-catalog-builder = inputs'.lintel.packages.lintel-catalog-builder;
   lintel-config-schema-generator = inputs'.lintel.packages.lintel-config-schema-generator;
   npm-release-binaries = inputs'.lintel.packages.npm-release-binaries;
-  mad = inputs'.mad.packages.mad;
+  mad = pkgs.callPackage ./mad/package.nix { };
 }
