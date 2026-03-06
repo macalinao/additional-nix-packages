@@ -5,7 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
-    devenv.url = "github:cachix/devenv/v2.0.2";
   };
 
   outputs =
@@ -24,11 +23,10 @@
         {
           pkgs,
           lib,
-          inputs',
           ...
         }:
         let
-          allPackages = import ./packages { inherit pkgs inputs'; };
+          allPackages = import ./packages { inherit pkgs; };
           supportedPackages = lib.filterAttrs (
             _: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
           ) allPackages;

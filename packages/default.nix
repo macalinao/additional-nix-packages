@@ -1,7 +1,7 @@
-{ pkgs, inputs', ... }:
+{ pkgs, ... }:
 {
   biome = pkgs.callPackage ./biome/package.nix { };
-  devenv = inputs'.devenv.packages.devenv;
+  devenv = pkgs.callPackage ./devenv/package.nix { };
   gogcli = pkgs.callPackage ./gogcli/package.nix { };
   linear-cli = pkgs.callPackage ./linear-cli/package.nix { };
   lintel = pkgs.callPackage ./lintel/package.nix { };
