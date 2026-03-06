@@ -8,16 +8,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "lintel";
-  version = "0.0.18";
+  version = "0.0.19";
 
   src = fetchFromGitHub {
     owner = "lintel-rs";
     repo = "lintel";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-tT71diY8VXvBoddEn4dCh0Qn/9MctoZWQdJBYrQas1s=";
+    hash = "sha256-oM7JrzlVYf5StHeeaWo9NJlI8EFLs3qLBxlYAHGH+kg=";
   };
 
-  cargoHash = "sha256-w0WjUCdu7pICjmKafHxtJY6xSTnUeLgJ5KAHk+72NRc=";
+  cargoHash = "sha256-iq3gf2n5cAXmPxSFuB517Oum8CdrRgDcqGct84Nfutg=";
 
   cargoBuildFlags = [
     "-p"
