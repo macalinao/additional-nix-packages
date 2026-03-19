@@ -4,7 +4,5 @@ inputs:
     inputs:
       nixpkgs:
         follows: nixpkgs
-  lintel:
-    url: github:lintel-rs/lintel
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling

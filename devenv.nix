@@ -1,5 +1,8 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
+let
+  lintel = pkgs.callPackage ./packages/lintel/package.nix { };
+in
 {
   packages = [ pkgs.git ];
 
@@ -14,7 +17,7 @@
     lintel = {
       enable = true;
       name = "lintel";
-      entry = "${inputs.lintel.packages.${pkgs.system}.lintel}/bin/lintel check";
+      entry = "${lintel}/bin/lintel check";
       stages = [ "commit-msg" ];
     };
   };
