@@ -16,9 +16,6 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
-
-      imports = [ ./overlays.nix ];
-
       perSystem =
         {
           pkgs,
