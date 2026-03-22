@@ -1,5 +1,7 @@
 # additional-nix-packages
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/macalinao/additional-nix-packages)
+
 Additional Nix packages not yet available in nixpkgs.
 
 ## Packages

@@ -11,9 +11,16 @@ in
     "igm"
   ];
 
+  treefmt = {
+    enable = true;
+    config.programs = {
+      nixfmt.enable = true;
+      oxfmt.enable = true;
+    };
+  };
+
   git-hooks.hooks = {
-    nixfmt.enable = true;
-    prettier.enable = true;
+    treefmt.enable = true;
     lintel = {
       enable = true;
       name = "lintel";
