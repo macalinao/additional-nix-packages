@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    permissions:
-      id-token: write
-      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -18,17 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: DeterminateSystems/determinate-nix-action@v3
-        if: runner.os != 'macOS' || runner.arch != 'X64'
-      - uses: DeterminateSystems/flakehub-cache-action@main
-        if: runner.os != 'macOS' || runner.arch != 'X64'
-        continue-on-error: true
-
       - uses: cachix/install-nix-action@v31
-        if: runner.os == 'macOS' && runner.arch == 'X64'
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: cachix/cachix-action@v16
         with:
           name: igm
