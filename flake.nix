@@ -16,21 +16,19 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
-      perSystem =
-        {
-          pkgs,
-          lib,
-          ...
-        }:
-        let
-          allPackages = import ./packages { inherit pkgs; };
-          supportedPackages = lib.filterAttrs (
-            _: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
-          ) allPackages;
-        in
-        {
-          packages = supportedPackages;
-          checks = supportedPackages;
-        };
+      imports = [
+        flake-parts.flakeModules.partitions
+        ./modules/packages.nix
+      ];
+
+      partitionedAttrs = {
+        devShells = "dev";
+        formatter = "dev";
+      };
+
+      partitions.dev = {
+        extraInputsFlake = ./dev;
+        module.imports = [ ./modules/dev.nix ];
+      };
     };
 }
