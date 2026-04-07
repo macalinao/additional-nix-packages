@@ -9,13 +9,13 @@
 }:
 
 let
-  version = "1.10.0";
+  version = "2.0.0";
 
   src = fetchFromGitHub {
     owner = "schpet";
     repo = "linear-cli";
     rev = "v${version}";
-    hash = "sha256-qhvU7oLe4nQPG6jSZWAzxkOENXJYPLQfNK2VVL2f1Dw=";
+    hash = "sha256-FR6WuTKws75i0T00ASxr6wTHYH8MNOdboJcDYD0aYVM=";
   };
 
   denoCache = stdenv.mkDerivation {
@@ -105,10 +105,10 @@ let
     outputHashAlgo = "sha256";
     outputHash =
       {
-        x86_64-linux = "sha256-SWIqonf4TUeJ9fEnY8KIMn/loaRRal8yuyUg5vSmuo4=";
-        aarch64-linux = "sha256-WZZbcpzoIp85EyDLNUf8VL/7hYR1h54nDddZjZxGJR4=";
-        x86_64-darwin = "sha256-SdR18eFf/7kKDZ35q5M5f7jRkzQguYmOVxRFqS3Hpgc=";
-        aarch64-darwin = "sha256-6BAmlErFC//TRjP2wteMWEgnhV+G5pWb7ouvfs5xxxw=";
+        x86_64-linux = "sha256-EPl1fsiWh/kVffmCkJSWy0Qor7MqmFiZGrB5vOPCOUU=";
+        aarch64-linux = "sha256-sjNCrgFJx/7WhbXDG+N5V2REc28WYGBYAVmOI3ehWHE=";
+        x86_64-darwin = "sha256-Y5Y1VOOrHNyxAXNulSdochNoqLincXhWT/jigC8y0R8=";
+        aarch64-darwin = "sha256-c/GiZ4giQyEDr4Kk0P/M03jTrw2IdzYXryaOTX4bQ0k=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
@@ -119,6 +119,9 @@ stdenv.mkDerivation (finalAttrs: {
   inherit version src;
 
   nativeBuildInputs = [ deno ];
+
+  # deno compile embeds data in the binary; strip removes it
+  dontStrip = true;
 
   buildPhase = ''
     export HOME="$(mktemp -d)"
