@@ -106,9 +106,9 @@ let
     outputHash =
       {
         x86_64-linux = "sha256-EPl1fsiWh/kVffmCkJSWy0Qor7MqmFiZGrB5vOPCOUU=";
-        aarch64-linux = lib.fakeHash;
-        x86_64-darwin = lib.fakeHash;
-        aarch64-darwin = lib.fakeHash;
+        aarch64-linux = "sha256-sjNCrgFJx/7WhbXDG+N5V2REc28WYGBYAVmOI3ehWHE=";
+        x86_64-darwin = "sha256-Y5Y1VOOrHNyxAXNulSdochNoqLincXhWT/jigC8y0R8=";
+        aarch64-darwin = "sha256-c/GiZ4giQyEDr4Kk0P/M03jTrw2IdzYXryaOTX4bQ0k=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
