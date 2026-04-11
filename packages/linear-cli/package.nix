@@ -130,8 +130,8 @@ let
       {
         x86_64-linux = "sha256-KZRsMHzzxITHgXzWoonXVI5vch0RGHKUf+1VcetFBUQ=";
         aarch64-linux = "sha256-tTlsAnzKMI/90uFaU9O7tty36o1gXfV+7RazJsIDfQQ=";
-        x86_64-darwin = lib.fakeHash;
-        aarch64-darwin = lib.fakeHash;
+        x86_64-darwin = "sha256-d0xSjHCthinrFE2bf1W89G9DYckWQKm8NmlSRXtBEEc=";
+        aarch64-darwin = "sha256-iLCjuAfDA8IGO63LSkaHCUKo7JgFGuasN4HpPYATptw=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
