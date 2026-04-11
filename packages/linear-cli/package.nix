@@ -122,12 +122,18 @@ let
       cp -r "$DENO_DIR" "$out"
     '';
 
-    # The cache no longer contains platform-specific content (denort is fetched
-    # separately as denortZip), so the same hash should be valid on all
-    # platforms. CI can re-verify on each target system.
+    # `deno install` resolves native npm packages (e.g. lefthook) for the
+    # current system only, so cache contents still differ per platform.
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-KZRsMHzzxITHgXzWoonXVI5vch0RGHKUf+1VcetFBUQ=";
+    outputHash =
+      {
+        x86_64-linux = "sha256-KZRsMHzzxITHgXzWoonXVI5vch0RGHKUf+1VcetFBUQ=";
+        aarch64-linux = "sha256-tTlsAnzKMI/90uFaU9O7tty36o1gXfV+7RazJsIDfQQ=";
+        x86_64-darwin = lib.fakeHash;
+        aarch64-darwin = lib.fakeHash;
+      }
+      .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
 in
 
