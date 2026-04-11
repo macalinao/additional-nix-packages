@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  fetchurl,
   deno,
   cacert,
   jq,
@@ -16,6 +17,32 @@ let
     repo = "linear-cli";
     rev = "v${version}";
     hash = "sha256-FR6WuTKws75i0T00ASxr6wTHYH8MNOdboJcDYD0aYVM=";
+  };
+
+  denortArch =
+    {
+      x86_64-linux = "x86_64-unknown-linux-gnu";
+      aarch64-linux = "aarch64-unknown-linux-gnu";
+      x86_64-darwin = "x86_64-apple-darwin";
+      aarch64-darwin = "aarch64-apple-darwin";
+    }
+    .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
+
+  # denort is the runtime binary that `deno compile` embeds into its output.
+  # `deno compile` unconditionally downloads this from dl.deno.land at build
+  # time, which fails inside the Nix sandbox. Fetch it separately, pinned to
+  # the nixpkgs deno version, and seed it into DENO_DIR before `deno compile`
+  # runs so it finds it without touching the network.
+  denortZip = fetchurl {
+    url = "https://dl.deno.land/release/v${deno.version}/denort-${denortArch}.zip";
+    hash =
+      {
+        x86_64-linux = "sha256-s8hqg36DYCFpaX3nv6W3FLL9JKaqIKnodmLZrNRnNf8=";
+        aarch64-linux = "sha256-6KZ09jSrDdmQAoTdU9UHGHM351w1XmZX3snWoesFKoI=";
+        x86_64-darwin = "sha256-1qlZ3U8vfRDWHmnBvrkQZnfH/djWaoYrlFzp9WC8Izw=";
+        aarch64-darwin = "sha256-ySSZJqI7I9TMl/HN7rU2wohe2UfNeoIc1+kk9CWf5g8=";
+      }
+      .${stdenv.hostPlatform.system};
   };
 
   denoCache = stdenv.mkDerivation {
@@ -33,12 +60,6 @@ let
 
       # Install all deps from deno.json/deno.lock
       deno install --allow-scripts --frozen
-
-      # Cache the denort runtime binary needed by deno compile.
-      # This downloads the platform-specific denort zip into DENO_DIR.
-      echo 'console.log("hello")' > /tmp/dummy.ts
-      deno compile --output /tmp/dummy /tmp/dummy.ts 2>/dev/null || true
-      rm -f /tmp/dummy /tmp/dummy.ts
 
       # Prune non-reproducible data from the cache (inspired by nixpkgs PR #407434).
       # registry.json files contain all published versions for a package and etags,
@@ -101,16 +122,12 @@ let
       cp -r "$DENO_DIR" "$out"
     '';
 
+    # The cache no longer contains platform-specific content (denort is fetched
+    # separately as denortZip), so the same hash should be valid on all
+    # platforms. CI can re-verify on each target system.
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash =
-      {
-        x86_64-linux = "sha256-EPl1fsiWh/kVffmCkJSWy0Qor7MqmFiZGrB5vOPCOUU=";
-        aarch64-linux = "sha256-sjNCrgFJx/7WhbXDG+N5V2REc28WYGBYAVmOI3ehWHE=";
-        x86_64-darwin = "sha256-Y5Y1VOOrHNyxAXNulSdochNoqLincXhWT/jigC8y0R8=";
-        aarch64-darwin = "sha256-c/GiZ4giQyEDr4Kk0P/M03jTrw2IdzYXryaOTX4bQ0k=";
-      }
-      .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
+    outputHash = "sha256-KZRsMHzzxITHgXzWoonXVI5vch0RGHKUf+1VcetFBUQ=";
   };
 in
 
@@ -130,6 +147,11 @@ stdenv.mkDerivation (finalAttrs: {
     export DENO_DIR="$(mktemp -d)"
     cp -r ${denoCache}/* "$DENO_DIR/"
     chmod -R u+w "$DENO_DIR"
+
+    # Seed the denort binary where `deno compile` expects to find it.
+    # Without this, deno compile tries to download it at build time.
+    mkdir -p "$DENO_DIR/dl/release/v${deno.version}"
+    cp ${denortZip} "$DENO_DIR/dl/release/v${deno.version}/denort-${denortArch}.zip"
 
     # Run codegen to generate GraphQL types
     deno run --cached-only --allow-all npm:@graphql-codegen/cli/graphql-codegen-esm
