@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  asimeow = pkgs.callPackage ./asimeow/package.nix { };
   biome = pkgs.callPackage ./biome/package.nix { };
   gogcli = pkgs.callPackage ./gogcli/package.nix { };
   linear-cli = pkgs.callPackage ./linear-cli/package.nix { };
