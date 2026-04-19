@@ -5,6 +5,8 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+
   pname = "protoc-gen-buffa";
   version = "0.3.0";
 
