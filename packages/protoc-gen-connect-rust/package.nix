@@ -1,35 +1,20 @@
 {
   lib,
   rustPlatform,
-  fetchFromGitHub,
+  fetchCrate,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "protoc-gen-connect-rust";
   version = "0.3.2";
 
-  src = fetchFromGitHub {
-    owner = "anthropics";
-    repo = "connect-rust";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-Hwsso0i5TM7tbtxMiDOuCMRVp68zVUEFXCRymaNCWbI=";
+  src = fetchCrate {
+    pname = "connectrpc-codegen";
+    inherit (finalAttrs) version;
+    hash = "sha256-cEG00Zn9wF4YGhrF1qHABN9ZcqAUeRJU50ZNi142SX4=";
   };
 
-  cargoLock.lockFile = ./Cargo.lock;
-
-  postPatch = ''
-    cp ${./Cargo.lock} Cargo.lock
-  '';
-
-  cargoBuildFlags = [
-    "-p"
-    "connectrpc-codegen"
-  ];
-
-  cargoTestFlags = [
-    "-p"
-    "connectrpc-codegen"
-  ];
+  cargoHash = "sha256-Wox9oH1gX35gh1w6Q0eh54rG4GnVA54hr1felQKDtog=";
 
   meta = {
     description = "Protoc plugin for generating ConnectRPC Rust service bindings";
