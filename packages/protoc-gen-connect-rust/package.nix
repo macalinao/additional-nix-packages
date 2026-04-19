@@ -6,13 +6,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "protoc-gen-connect-rust";
-  version = "0.2.1";
+  version = "0.3.2";
 
   src = fetchFromGitHub {
     owner = "anthropics";
     repo = "connect-rust";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-MFtaPURj5nHgPPDHuXgPttEdLbAScFZ7Q8D6mypMjs8=";
+    hash = "sha256-Hwsso0i5TM7tbtxMiDOuCMRVp68zVUEFXCRymaNCWbI=";
   };
 
   cargoLock.lockFile = ./Cargo.lock;

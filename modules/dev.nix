@@ -26,7 +26,12 @@
       };
 
       devShells.default = pkgs.mkShell {
-        packages = [ pkgs.git ];
+        packages = with pkgs; [
+          git
+          nix-prefetch
+          nix-prefetch-git
+          nix-prefetch-github
+        ];
         inputsFrom = [
           config.treefmt.build.devShell
         ];

@@ -24,3 +24,5 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - run: nix flake check --print-build-logs
+      - name: Build devShell
+        run: nix develop --print-build-logs --command true
