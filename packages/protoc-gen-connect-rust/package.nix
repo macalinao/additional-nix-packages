@@ -32,7 +32,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   meta = {
-    description = "protoc plugin for generating ConnectRPC Rust service bindings";
+    description = "Protoc plugin for generating ConnectRPC Rust service bindings";
     homepage = "https://github.com/anthropics/connect-rust";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ macalinao ];

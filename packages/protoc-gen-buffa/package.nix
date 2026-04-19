@@ -28,7 +28,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   meta = {
-    description = "protoc plugin for generating Rust code with buffa";
+    description = "Protoc plugin for generating Rust code with buffa";
     homepage = "https://github.com/anthropics/buffa";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ macalinao ];

@@ -28,7 +28,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   meta = {
-    description = "protoc plugin that emits a mod.rs module tree for buffa per-file output";
+    description = "Protoc plugin that emits a mod.rs module tree for buffa per-file output";
     homepage = "https://github.com/anthropics/buffa";
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [ macalinao ];
