@@ -6,6 +6,8 @@
 }:
 
 buildGoModule (finalAttrs: {
+  __structuredAttrs = true;
+
   pname = "wacli";
   version = "0.2.0";
 

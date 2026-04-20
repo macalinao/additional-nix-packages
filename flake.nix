@@ -19,6 +19,7 @@
       imports = [
         flake-parts.flakeModules.partitions
         ./modules/packages.nix
+        ./modules/vet.nix
       ];
 
       partitionedAttrs = {

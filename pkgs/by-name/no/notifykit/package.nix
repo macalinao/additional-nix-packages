@@ -9,6 +9,8 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+
   pname = "notifykit";
   version = "0.1.2";
 

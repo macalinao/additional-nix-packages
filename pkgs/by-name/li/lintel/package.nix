@@ -7,6 +7,8 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+
   pname = "lintel";
   version = "0.0.19";
 

@@ -7,6 +7,8 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+
   pname = "mad";
   version = "0.1.1";
 

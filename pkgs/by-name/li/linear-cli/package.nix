@@ -138,6 +138,9 @@ let
 in
 
 stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "linear-cli";
   inherit version src;
 

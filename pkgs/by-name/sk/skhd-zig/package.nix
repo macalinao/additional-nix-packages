@@ -10,6 +10,9 @@
 }:
 
 stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "skhd-zig";
   version = "0.0.17";
 

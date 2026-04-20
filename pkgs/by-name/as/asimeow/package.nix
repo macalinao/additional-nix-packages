@@ -6,6 +6,8 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+
   pname = "asimeow";
   version = "0.2.1";
 

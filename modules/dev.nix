@@ -22,6 +22,7 @@
           enable = true;
           name = "lintel";
           entry = "${config.packages.lintel}/bin/lintel check";
+          excludes = [ "\\.patch$" ];
         };
       };
 
