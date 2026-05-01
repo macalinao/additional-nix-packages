@@ -129,9 +129,9 @@ let
     outputHash =
       {
         x86_64-linux = "sha256-KZRsMHzzxITHgXzWoonXVI5vch0RGHKUf+1VcetFBUQ=";
-        aarch64-linux = "sha256-tTlsAnzKMI/90uFaU9O7tty36o1gXfV+7RazJsIDfQQ=";
-        x86_64-darwin = "sha256-d0xSjHCthinrFE2bf1W89G9DYckWQKm8NmlSRXtBEEc=";
-        aarch64-darwin = "sha256-iLCjuAfDA8IGO63LSkaHCUKo7JgFGuasN4HpPYATptw=";
+        aarch64-linux = "sha256-Me4KVQl47jzNW3bSguvEH24Bij4VieSO/B0HvXunixs=";
+        x86_64-darwin = "sha256-Iz/N0jYyjYhF9n8tC4U8WkI7cqLbMf7bWiUdjSza8sY=";
+        aarch64-darwin = "sha256-S8lF/AJNEn7gtT+K6PjdgKBPOGhc+TFiqDfUq+5qhCk=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
