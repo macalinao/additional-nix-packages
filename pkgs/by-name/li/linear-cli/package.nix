@@ -37,10 +37,10 @@ let
     url = "https://dl.deno.land/release/v${deno.version}/denort-${denortArch}.zip";
     hash =
       {
-        x86_64-linux = "sha256-kvYW0T9L7avvgeKAA0AwPGpybit8jrNg0y2oIXMWclQ=";
-        aarch64-linux = "sha256-pBMiHG54QYWf8deoKGvvjma5tYCXfuOzksVfz6ONdAw=";
-        x86_64-darwin = "sha256-L6pl28Fy873sA/KgImaWHnwBLwo5/DxQnKx6gaftWos=";
-        aarch64-darwin = "sha256-E+/cRnsthOgIMdpw8ozbdMqiyLxYhYBwur0vmFUbkAI=";
+        x86_64-linux = "sha256-s8hqg36DYCFpaX3nv6W3FLL9JKaqIKnodmLZrNRnNf8=";
+        aarch64-linux = "sha256-6KZ09jSrDdmQAoTdU9UHGHM351w1XmZX3snWoesFKoI=";
+        x86_64-darwin = "sha256-1qlZ3U8vfRDWHmnBvrkQZnfH/djWaoYrlFzp9WC8Izw=";
+        aarch64-darwin = "sha256-ySSZJqI7I9TMl/HN7rU2wohe2UfNeoIc1+kk9CWf5g8=";
       }
       .${stdenv.hostPlatform.system};
   };
