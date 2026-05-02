@@ -37,10 +37,10 @@ let
     url = "https://dl.deno.land/release/v${deno.version}/denort-${denortArch}.zip";
     hash =
       {
-        x86_64-linux = "sha256-kvYW0T9L7avvgeKAA0AwPGpybit8jrNg0y2oIXMWclQ=";
-        aarch64-linux = "sha256-pBMiHG54QYWf8deoKGvvjma5tYCXfuOzksVfz6ONdAw=";
-        x86_64-darwin = "sha256-L6pl28Fy873sA/KgImaWHnwBLwo5/DxQnKx6gaftWos=";
-        aarch64-darwin = "sha256-E+/cRnsthOgIMdpw8ozbdMqiyLxYhYBwur0vmFUbkAI=";
+        x86_64-linux = "sha256-CvOVzxQi5mmRsWVLhdrStqIiAA3NeovPU1eLfrVCmnU=";
+        aarch64-linux = "sha256-dsiWymV6hgHkcYcFR1tBlPJPcYxn7ZcxMmy+Hv+lt2w=";
+        x86_64-darwin = "sha256-3HkRG/eFfPU/K4SADGmi/AW30mmsLbb2xDnttAoCCwc=";
+        aarch64-darwin = "sha256-Q8bhQgd8q5d8Z4WvUUISR58/T5RR04bRauJse+fMuG0=";
       }
       .${stdenv.hostPlatform.system};
   };
@@ -129,9 +129,9 @@ let
     outputHash =
       {
         x86_64-linux = "sha256-KZRsMHzzxITHgXzWoonXVI5vch0RGHKUf+1VcetFBUQ=";
-        aarch64-linux = "sha256-tTlsAnzKMI/90uFaU9O7tty36o1gXfV+7RazJsIDfQQ=";
-        x86_64-darwin = "sha256-d0xSjHCthinrFE2bf1W89G9DYckWQKm8NmlSRXtBEEc=";
-        aarch64-darwin = "sha256-iLCjuAfDA8IGO63LSkaHCUKo7JgFGuasN4HpPYATptw=";
+        aarch64-linux = "sha256-Me4KVQl47jzNW3bSguvEH24Bij4VieSO/B0HvXunixs=";
+        x86_64-darwin = "sha256-Iz/N0jYyjYhF9n8tC4U8WkI7cqLbMf7bWiUdjSza8sY=";
+        aarch64-darwin = "sha256-S8lF/AJNEn7gtT+K6PjdgKBPOGhc+TFiqDfUq+5qhCk=";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system: ${stdenv.hostPlatform.system}");
   };
