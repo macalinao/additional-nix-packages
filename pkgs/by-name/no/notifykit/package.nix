@@ -5,7 +5,7 @@
   cargo-bundle,
   rcodesign,
   apple-sdk_15,
-  testers,
+  versionCheckHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -55,9 +55,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     rcodesign sign $out/Applications/NotifyKit.app
   '';
 
-  passthru.tests.version = testers.testVersion {
-    package = finalAttrs.finalPackage;
-  };
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   meta = {
     description = "Notification CLI for macOS with Claude Code hook support";

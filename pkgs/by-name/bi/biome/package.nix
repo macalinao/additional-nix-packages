@@ -6,7 +6,7 @@
   libgit2,
   rust-jemalloc-sys,
   zlib,
-  testers,
+  versionCheckHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -39,9 +39,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     LIBGIT2_NO_VENDOR = 1;
   };
 
-  passthru.tests.version = testers.testVersion {
-    package = finalAttrs.finalPackage;
-  };
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   meta = {
     description = "Toolchain of the web";

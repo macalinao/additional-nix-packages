@@ -3,7 +3,7 @@
   rustPlatform,
   fetchFromGitHub,
   installShellFiles,
-  testers,
+  versionCheckHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -44,9 +44,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     installManPage lintel.1
   '';
 
-  passthru.tests.version = testers.testVersion {
-    package = finalAttrs.finalPackage;
-  };
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   meta = {
     description = "Fast JSON Schema linter for JSON and YAML config files";

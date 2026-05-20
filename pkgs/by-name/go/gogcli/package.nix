@@ -2,7 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
-  testers,
+  versionCheckHook,
 }:
 
 buildGoModule (finalAttrs: {
@@ -28,11 +28,8 @@ buildGoModule (finalAttrs: {
     "-X github.com/steipete/gogcli/internal/cmd.date=1970-01-01T00:00:00Z"
   ];
 
-  passthru.tests.version = testers.testVersion {
-    package = finalAttrs.finalPackage;
-    command = "gog --version";
-    version = "v${finalAttrs.version}";
-  };
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   meta = {
     description = "CLI tool for interacting with Google APIs (Gmail, Calendar, Drive, and more)";

@@ -6,7 +6,7 @@
   apple-sdk,
   rcodesign,
   replaceVars,
-  testers,
+  versionCheckHook,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -63,11 +63,8 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postBuild
   '';
 
-  passthru.tests.version = testers.testVersion {
-    package = finalAttrs.finalPackage;
-    command = "skhd --version";
-    version = "v${finalAttrs.version}";
-  };
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   meta = {
     description = "Zig rewrite of skhd - simple hotkey daemon for macOS";

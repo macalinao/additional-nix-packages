@@ -2,7 +2,7 @@
   lib,
   rustPlatform,
   fetchFromGitHub,
-  testers,
+  versionCheckHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -20,11 +20,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-wjIDv+fWYdqpKC0lC99B1BIkQ1DvhLhsadlQhFG+83M=";
 
-  passthru.tests.version = testers.testVersion {
-    package = finalAttrs.finalPackage;
-    command = "asimeow version";
-    version = "Asimeow version ${finalAttrs.version}";
-  };
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
+  versionCheckProgramArg = "version";
 
   meta = {
     description = "Smart command line macOS Time Machine exclusion manager for busy developers";
