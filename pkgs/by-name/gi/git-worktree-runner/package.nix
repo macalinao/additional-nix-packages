@@ -15,6 +15,9 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "git-worktree-runner";
   version = "2.7.3";
 
