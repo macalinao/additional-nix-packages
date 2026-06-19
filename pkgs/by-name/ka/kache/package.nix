@@ -44,6 +44,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Flaky under the sandbox's high parallelism: stresses concurrent
     # SQLite access and intermittently fails with "database is locked".
     "--skip=store::tests::test_concurrent_put_remove_never_dangles"
+    # macOS-only: shells out to `tmutil isexcluded`, which is unavailable
+    # in the build sandbox.
+    "--skip=store::tests::test_exclude_from_indexing_sets_tmutil_xattr"
   ];
 
   doInstallCheck = true;
