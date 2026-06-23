@@ -8,16 +8,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "protoc-gen-buffa";
-  version = "0.3.0";
+  version = "0.7.1";
 
   src = fetchFromGitHub {
     owner = "anthropics";
     repo = "buffa";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-WTKa4Wdc9SwjNZFZ2iKVKfE+hGpXZbVY8+ndJ908tMc=";
+    hash = "sha256-Qxgv6GUp1UoAKDfEqrhGpk4HTn9jtLOOeh4U8Ws63oI=";
   };
 
-  cargoHash = "sha256-0MuE998GRVHdd0quotESyTVzjRhB8dPC0TDw+mpARK0=";
+  cargoHash = "sha256-nXjW6Dr+S0HhAf7LD24UZPjU9puae+qRBeuk1c7Rdkk=";
 
   cargoBuildFlags = [
     "-p"
