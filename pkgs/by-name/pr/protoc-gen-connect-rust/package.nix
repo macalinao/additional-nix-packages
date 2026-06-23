@@ -8,15 +8,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "protoc-gen-connect-rust";
-  version = "0.3.2";
+  version = "0.7.0";
 
   src = fetchCrate {
     pname = "connectrpc-codegen";
     inherit (finalAttrs) version;
-    hash = "sha256-cEG00Zn9wF4YGhrF1qHABN9ZcqAUeRJU50ZNi142SX4=";
+    hash = "sha256-1k05fZkM3Ds/PR+8+8D2JbaD1J3w2YhwI3GS6gGpkmw=";
   };
 
-  cargoHash = "sha256-Wox9oH1gX35gh1w6Q0eh54rG4GnVA54hr1felQKDtog=";
+  cargoHash = "sha256-hI+fqSCdveSKMdavYd7OSt6SG3o/hFwZ6+GNEi+yBuE=";
 
   meta = {
     description = "Protoc plugin for generating ConnectRPC Rust service bindings";
