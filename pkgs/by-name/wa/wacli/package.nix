@@ -1,24 +1,24 @@
 {
   lib,
-  buildGoModule,
+  buildGo127Module,
   fetchFromGitHub,
   versionCheckHook,
 }:
 
-buildGoModule (finalAttrs: {
+buildGo127Module (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "wacli";
-  version = "0.2.0";
+  version = "0.18.1";
 
   src = fetchFromGitHub {
     owner = "steipete";
     repo = "wacli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-tJ5d33VVW5aYvacHJEVm8cVKVtpdWCIOdHNy2WTR4Cg=";
+    hash = "sha256-wWTrU7aIIwKvPPaCjO7A+x3FIF7oMYhQoefU5CGlhGo=";
   };
 
-  vendorHash = "sha256-0mHZjZHQBHTlPzVT4ScyRBSaQ4Z8FEm2GFfsPF6Tjrw=";
+  vendorHash = "sha256-8Wo54XTj1tLshcAuiStmy+ux8R2tEHUaVSTCZQBMdnE=";
 
   # Enables SQLite FTS5 (full-text search) in mattn/go-sqlite3 for message history search
   tags = [ "sqlite_fts5" ];
