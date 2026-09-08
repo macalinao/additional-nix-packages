@@ -1,12 +1,12 @@
 --- a/build.zig
 +++ b/build.zig
-@@ -4,6 +4,9 @@ fn linkFrameworks(exe: *std.Build.Step.Compile) void {
-     exe.linkFramework("Cocoa");
-     exe.linkFramework("Carbon");
-     exe.linkFramework("CoreServices");
-+    exe.root_module.addFrameworkPath(.{ .cwd_relative = "@darwin-frameworks@" });
-+    exe.root_module.addSystemIncludePath(.{ .cwd_relative = "@darwin-include@" });
-+    exe.root_module.addLibraryPath(.{ .cwd_relative = "@darwin-lib@" });
- }
-
- fn addVersionImport(b: *std.Build, exe: *std.Build.Step.Compile) void {
+@@ -161,8 +161,7 @@
+     // double-prefix paths added with cwd_relative, so we stash the SDK path
+     // in a module-level var instead.
+     if (target.result.os.tag == .macos) {
+-        const out = b.run(&.{ "xcrun", "--sdk", "macosx", "--show-sdk-path" });
+-        sdk_path = std.mem.trim(u8, out, " \n\r\t");
++        sdk_path = "@darwin-sdkroot@";
+     }
+ 
+     // Shared protocol module: types + framing for the agent ↔ grabber

@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  zig_0_14,
+  zig_0_16,
   apple-sdk,
   rcodesign,
   replaceVars,
@@ -14,29 +14,29 @@ stdenv.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   pname = "skhd-zig";
-  version = "0.0.17";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "jackielii";
     repo = "skhd.zig";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-yQjWOYaavgRfcoesDlHV28sU+PBD8wL06r6BIHzrHy0=";
+    hash = "sha256-Qi5srrpdhf3VcXaqZbijJD23Um0G7WgRzK0hR+mb7nU=";
   };
 
   patches = [
     ./remove-zbench.patch
-    ./headerpad.patch
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    # build.zig pins an explicit macOS deployment target, which makes Zig
+    # stop auto-resolving the SDK, so upstream probes `xcrun` for it. Point
+    # it at the nixpkgs SDK instead.
     (replaceVars ./darwin.patch {
-      darwin-frameworks = "${apple-sdk.sdkroot}/System/Library/Frameworks";
-      darwin-include = "${apple-sdk.sdkroot}/usr/include";
-      darwin-lib = "${apple-sdk.sdkroot}/usr/lib";
+      darwin-sdkroot = "${apple-sdk.sdkroot}";
     })
   ];
 
   nativeBuildInputs = [
-    zig_0_14
+    zig_0_16
     rcodesign
   ];
 
@@ -59,6 +59,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     # Ad-hoc code sign for macOS accessibility permissions
     rcodesign sign $out/bin/skhd
+    rcodesign sign $out/bin/skhd-grabber
 
     runHook postBuild
   '';
@@ -69,6 +70,7 @@ stdenv.mkDerivation (finalAttrs: {
   meta = {
     description = "Zig rewrite of skhd - simple hotkey daemon for macOS";
     homepage = "https://github.com/jackielii/skhd.zig";
+    changelog = "https://github.com/jackielii/skhd.zig/blob/v${finalAttrs.version}/CHANGELOG.md";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ macalinao ];
     platforms = lib.platforms.darwin;
