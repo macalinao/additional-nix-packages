@@ -19,13 +19,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   pname = "git-worktree-runner";
-  version = "2.7.3";
+  version = "2.11.0";
 
   src = fetchFromGitHub {
     owner = "coderabbitai";
     repo = "git-worktree-runner";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-tksTABDbNlXcC8vRi5q3u5MjeCRapeL2pgS8PLhduz8=";
+    hash = "sha256-k2bJiT2bElUewypuuW5hHZWA9/Q2AfzrRLzUkuowh3c=";
   };
 
   nativeBuildInputs = [
