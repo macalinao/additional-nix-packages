@@ -10,6 +10,9 @@
 }:
 
 stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "claude-devtools";
   version = "0.5.0";
 
