@@ -3,6 +3,8 @@
   rustPlatform,
   fetchFromGitHub,
   cacert,
+  stdenv,
+  xcbuild,
   versionCheckHook,
 }:
 
@@ -39,8 +41,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   # Tests that talk to a loopback mock HTTP server still build a reqwest
   # client, which panics unless a system CA bundle can be loaded.
-  nativeCheckInputs = [ cacert ];
+  nativeCheckInputs = [ cacert ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ xcbuild ];
   env.SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+
+  # On Darwin, the cache-key tests fold in the macOS SDK identity via
+  # `xcrun --sdk "$SDKROOT" --show-sdk-version`. There is no system xcrun in
+  # the sandbox, and xcbuild's xcrun only resolves SDKs by name, not by the
+  # store path stdenv puts in SDKROOT, so let it fall back to `macosx`.
+  preCheck = lib.optionalString stdenv.hostPlatform.isDarwin ''
+    unset SDKROOT
+  '';
 
   checkFlags = [
     # Upstream's own regression test for transient state-file read failures
