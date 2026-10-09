@@ -62,6 +62,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Waits at most 5s for a background prefetch task to record its failure;
     # times out under the parallel test load of a busy builder.
     "--skip=daemon::tests::prefetch_import_failure_is_counted_as_failure"
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    # Spawns /usr/bin/sandbox-exec, which cannot apply a nested profile
+    # inside the Darwin build sandbox (exits 71).
+    "--skip=fallback::macos::tests::policy_distinguishes_denied_and_allowed_output"
   ];
 
   doInstallCheck = true;
