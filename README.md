@@ -14,6 +14,7 @@ Additional Nix packages not yet available in nixpkgs.
 - **kdl-lsp** - LSP server for the KDL Document Language. [Source](https://github.com/kdl-org/kdl-rs)
 - **lintel** - Fast JSON Schema linter for JSON and YAML config files. [Source](https://github.com/lintel-rs/lintel)
 - **mad** - Fast Markdown terminal renderer with syntax highlighting. [Source](https://github.com/macalinao/mad)
+- **msgvault** - Offline archive with search, analytics, and AI query over email and chat history. [Source](https://github.com/kenn-io/msgvault)
 - **notifykit** - Notification CLI for macOS with Claude Code hook support. [Source](https://github.com/macalinao/notifykit)
 - **protoc-gen-buffa**, **protoc-gen-buffa-packaging** - Protoc plugins for generating Rust code with buffa. [Source](https://github.com/anthropics/buffa)
 - **protoc-gen-connect-rust** - Protoc plugin for generating ConnectRPC Rust service bindings. [Source](https://github.com/anthropics/connect-rust)
