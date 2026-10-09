@@ -12,16 +12,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "kache";
-  version = "0.18.0";
+  version = "1.0.0";
 
   src = fetchFromGitHub {
     owner = "kunobi-ninja";
     repo = "kache";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-M0L0B4/Gom2hT19XAHFclDOPbylN8dpjNXsEsuGgHjU=";
+    hash = "sha256-Kbww7mmdUAASh1sbjdoqoosSA76EALJata+Aa8SJUnE=";
   };
 
-  cargoHash = "sha256-M3beojPbL5tOUvhn7jxQ8o/N1lh9e5paaf9T45cI7nw=";
+  cargoHash = "sha256-/qpQMj48/wp+Ui8OWpdCdqptv1ON/xLLdslVmumZhIY=";
 
   # Build only the main kache binary; the workspace also contains library
   # crates, an end-to-end test crate and a service crate that are not
@@ -59,6 +59,14 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # again; under the sandbox's parallel test load the follow-up lease is
     # still declined and the test fails.
     "--skip=incremental_policy::tests::unreadable_state_declines_without_destroying_learned_state"
+    # Waits at most 5s for a background prefetch task to record its failure;
+    # times out under the parallel test load of a busy builder.
+    "--skip=daemon::tests::prefetch_import_failure_is_counted_as_failure"
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    # Spawns /usr/bin/sandbox-exec, which cannot apply a nested profile
+    # inside the Darwin build sandbox (exits 71).
+    "--skip=fallback::macos::tests::policy_distinguishes_denied_and_allowed_output"
   ];
 
   doInstallCheck = true;
