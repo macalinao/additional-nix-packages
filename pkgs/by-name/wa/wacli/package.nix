@@ -9,16 +9,16 @@ buildGo127Module (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "wacli";
-  version = "0.18.1";
+  version = "0.20.0";
 
   src = fetchFromGitHub {
     owner = "steipete";
     repo = "wacli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-wWTrU7aIIwKvPPaCjO7A+x3FIF7oMYhQoefU5CGlhGo=";
+    hash = "sha256-hbJcS22EtgxgJ0wK3dlqkBF/FTAs4zdOthr3st/4x3o=";
   };
 
-  vendorHash = "sha256-8Wo54XTj1tLshcAuiStmy+ux8R2tEHUaVSTCZQBMdnE=";
+  vendorHash = "sha256-E/LnctFkSYMctq2wJaCjjUip7UPniNVEVwxQ6ewUIxo=";
 
   # Enables SQLite FTS5 (full-text search) in mattn/go-sqlite3 for message history search
   tags = [ "sqlite_fts5" ];
