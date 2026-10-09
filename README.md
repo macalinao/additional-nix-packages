@@ -8,6 +8,7 @@ Additional Nix packages not yet available in nixpkgs.
 
 - **asimeow** - Smart command line macOS Time Machine exclusion manager for busy developers. [Source](https://github.com/mdnmdn/asimeow)
 - **claude-devtools** - DevTools for Claude Code. [Source](https://github.com/matt1398/claude-devtools)
+- **fjordlauncher-unlocked** (`fjordlauncher`) - Prism Launcher fork for Minecraft with support for alternative auth servers and no DRM. [Source](https://github.com/hero-persson/FjordLauncherUnlocked)
 - **git-worktree-runner** (`git-gtr`, `gtr`) - Bash-based Git worktree manager with editor and AI tool integration. [Source](https://github.com/coderabbitai/git-worktree-runner)
 - **kache** - Zero-copy, content-addressed build cache for Rust and C/C++. [Source](https://github.com/kunobi-ninja/kache)
 - **kdl-lsp** - LSP server for the KDL Document Language. [Source](https://github.com/kdl-org/kdl-rs)
