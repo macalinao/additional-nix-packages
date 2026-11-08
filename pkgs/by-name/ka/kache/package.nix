@@ -12,23 +12,24 @@ rustPlatform.buildRustPackage (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "kache";
-  version = "1.0.0";
+  version = "2.0.0";
 
   src = fetchFromGitHub {
     owner = "kunobi-ninja";
     repo = "kache";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Kbww7mmdUAASh1sbjdoqoosSA76EALJata+Aa8SJUnE=";
+    hash = "sha256-1O4JrN2zzKS7QgBT2fnih2W+zvEqBT5dvEuxCuyU3Kg=";
   };
 
-  cargoHash = "sha256-/qpQMj48/wp+Ui8OWpdCdqptv1ON/xLLdslVmumZhIY=";
+  cargoHash = "sha256-6fA+IMcUtpPZZoVPWr15pUAPwxwsO2gTHtmzG5qqUjo=";
 
-  # Build only the main kache binary; the workspace also contains library
+  # Build the frontend and companion engine; the workspace also contains library
   # crates, an end-to-end test crate and a service crate that are not
   # shipped here.
   cargoBuildFlags = [
     "--package"
     "kache"
+    "--bins"
   ];
   # Restrict to unit tests: the integration tests under tests/ are an
   # end-to-end harness that runs kache as a RUSTC_WRAPPER and expects a
@@ -36,6 +37,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   cargoTestFlags = [
     "--package"
     "kache"
+    "--lib"
     "--bins"
   ];
 
