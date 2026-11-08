@@ -3,6 +3,9 @@
   rustPlatform,
   fetchFromGitHub,
   cacert,
+  coreutils,
+  bashInteractive,
+  zsh,
   stdenv,
   xcbuild,
   versionCheckHook,
@@ -43,7 +46,14 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   # Tests that talk to a loopback mock HTTP server still build a reqwest
   # client, which panics unless a system CA bundle can be loaded.
-  nativeCheckInputs = [ cacert ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ xcbuild ];
+  nativeCheckInputs = [
+    cacert
+    bashInteractive
+    zsh
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [ xcbuild ];
+  # The native process fixture embeds sleep and locates cp beside it.
+  env.KACHE_TEST_SLEEP = "${coreutils}/bin/sleep";
   env.SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
   # On Darwin, the cache-key tests fold in the macOS SDK identity via
