@@ -79,6 +79,20 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Spawns /usr/bin/sandbox-exec, which cannot apply a nested profile
     # inside the Darwin build sandbox (exits 71).
     "--skip=fallback::macos::tests::policy_distinguishes_denied_and_allowed_output"
+    # The daemon execution tests re-exec themselves as a client compiler
+    # fixture. Inside the Darwin build sandbox the daemon declines them
+    # ("compiler process isolation requires local execution"), nested
+    # sandbox-exec is not permitted, and the fixture compilers never signal
+    # ready or report their exit status, so none of these can pass there.
+    "--skip=daemon::execution::tests::disconnected_accepted_compiler_is_cancelled_and_reaped"
+    "--skip=daemon::execution::tests::draining_before_commit_releases_worker_without_starting_a_compiler"
+    "--skip=daemon::execution::tests::execution_handoff_streams_two_compilers_without_serializing_or_mixing_clients"
+    "--skip=daemon::execution::tests::execution_jobserver_descriptors_reach_only_the_compiler"
+    "--skip=daemon::execution::tests::execution_keeps_a_silent_compiler_alive_past_the_daemon_idle_timeout"
+    "--skip=daemon::execution::tests::execution_rejects_sandboxed_client_using_kernel_identity"
+    "--skip=daemon::execution::tests::only_accepted_execution_marks_build_activity"
+    "--skip=daemon::execution::tests::original_compiler_shim_uses_the_clients_relative_path"
+    "--skip=daemon::execution::tests::prepared_compiler_never_runs_without_commit_and_releases_its_resources"
   ];
 
   doInstallCheck = true;
