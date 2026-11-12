@@ -7,6 +7,7 @@ Additional Nix packages not yet available in nixpkgs.
 ## Packages
 
 - **asimeow** - Smart command line macOS Time Machine exclusion manager for busy developers. [Source](https://github.com/mdnmdn/asimeow)
+- **batonpass** (`baton`) - Run a command with a share of the GNU make jobserver's tokens. [Source](https://github.com/macalinao/batonpass)
 - **claude-devtools** - DevTools for Claude Code. [Source](https://github.com/matt1398/claude-devtools)
 - **fjordlauncher-unlocked** (`fjordlauncher`) - Prism Launcher fork for Minecraft with support for alternative auth servers and no DRM. [Source](https://github.com/hero-persson/FjordLauncherUnlocked)
 - **git-worktree-runner** (`git-gtr`, `gtr`) - Bash-based Git worktree manager with editor and AI tool integration. [Source](https://github.com/coderabbitai/git-worktree-runner)
