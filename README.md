@@ -11,7 +11,6 @@ Additional Nix packages not yet available in nixpkgs.
 - **claude-devtools** - DevTools for Claude Code. [Source](https://github.com/matt1398/claude-devtools)
 - **fjordlauncher-unlocked** (`fjordlauncher`) - Prism Launcher fork for Minecraft with support for alternative auth servers and no DRM. [Source](https://github.com/hero-persson/FjordLauncherUnlocked)
 - **git-worktree-runner** (`git-gtr`, `gtr`) - Bash-based Git worktree manager with editor and AI tool integration. [Source](https://github.com/coderabbitai/git-worktree-runner)
-- **kache** - Zero-copy, content-addressed build cache for Rust and C/C++. [Source](https://github.com/kunobi-ninja/kache)
 - **kdl-lsp** - LSP server for the KDL Document Language. [Source](https://github.com/kdl-org/kdl-rs)
 - **lintel** - Fast JSON Schema linter for JSON and YAML config files. [Source](https://github.com/lintel-rs/lintel)
 - **mad** - Fast Markdown terminal renderer with syntax highlighting. [Source](https://github.com/macalinao/mad)
