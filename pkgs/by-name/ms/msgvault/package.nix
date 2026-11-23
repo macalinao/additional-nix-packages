@@ -125,7 +125,7 @@ buildGo127Module (finalAttrs: {
         runHook postInstall
       '';
 
-      outputHash = "sha256-9/CKpatNZAZDfWPUyF5GFMBFaYtjkcA5aLsYBKc+/Fg=";
+      outputHash = "sha256-MC+FloPlV7d0JLNEEO115ZA+O7brPNa1Azzt/S2dElM=";
       outputHashAlgo = "sha256";
       outputHashMode = "recursive";
     };

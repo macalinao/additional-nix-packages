@@ -3,6 +3,8 @@
   rustPlatform,
   fetchFromGitHub,
   installShellFiles,
+  oniguruma,
+  pkg-config,
   versionCheckHook,
 }:
 
@@ -31,9 +33,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
     "lintel"
   ];
 
+  # onig_sys: nixpkgs' cargo hook sets RUSTONIG_SYSTEM_LIBONIG=1 (NixOS/nixpkgs#570938).
   nativeBuildInputs = [
     installShellFiles
+    pkg-config
   ];
+
+  buildInputs = [ oniguruma ];
 
   postInstall = ''
     installShellCompletion --cmd lintel \
